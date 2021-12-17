@@ -21,7 +21,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
   private let encoder: JSONEncoder
   private let decoder: JSONDecoder
   
-  init(suiteName: String? = nil, encoder: JSONEncoder = JSONEncoder(), decoder: JSONDecoder = JSONDecoder()) {
+  public init(suiteName: String? = nil, encoder: JSONEncoder = JSONEncoder(), decoder: JSONDecoder = JSONDecoder()) {
     self.encoder = encoder
     self.decoder = decoder
     
@@ -32,7 +32,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     }
   }
   
-  func getAll() -> AnyRandomAccessCollection<Model> {
+  public func getAll() -> AnyRandomAccessCollection<Model> {
     guard let data = userDefault.value(forKey: key) as? Data else { return AnyRandomAccessCollection([]) }
     
     do {
@@ -42,13 +42,13 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     }
   }
   
-  func getElement<Identifier>(withId id: Identifier) -> Model? {
+  public func getElement<Identifier>(withId id: Identifier) -> Model? {
     guard let correctId = id as? Model.Identifier else { return nil }
     let allData = self.getAll()
     return allData.filter({ $0.id == correctId }).first ?? nil
   }
   
-  func getElements(filteredBy filter: Query<Model>?, sortedBy sortKeyPath: ComparableKeyPath<Model>?, distinctUsing distinctMode: HashableKeyPath<Model>?) -> AnyRandomAccessCollection<Model> {
+  public func getElements(filteredBy filter: Query<Model>?, sortedBy sortKeyPath: ComparableKeyPath<Model>?, distinctUsing distinctMode: HashableKeyPath<Model>?) -> AnyRandomAccessCollection<Model> {
     var objects = self.getAll()
     
     if let query = filter {
@@ -70,7 +70,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return AnyRandomAccessCollection(objects)
   }
   
-  func create(_ model: Model) -> RepositoryEditResult<Object> {
+  public func create(_ model: Model) -> RepositoryEditResult<Object> {
     var objects = Set(self.getAll())
     guard !objects.contains(model) else { return .error(UserDefaultsRepositoryError.valueAlreadyExists(model)) }
     
@@ -80,7 +80,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return .success(model)
   }
   
-  func create(_ models: [Model]) -> RepositoryEditResult<[Object]> {
+  public func create(_ models: [Model]) -> RepositoryEditResult<[Object]> {
     var objects = Set(self.getAll())
     guard Set(models).intersection(objects).isEmpty else { return .error(UserDefaultsRepositoryError.valuesAlreadyExist(models)) }
     
@@ -90,7 +90,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return .success(models)
   }
   
-  func update(_ model: Model) -> RepositoryEditResult<Object> {
+  public func update(_ model: Model) -> RepositoryEditResult<Object> {
     var objects = Set(getAll())
     guard objects.contains(model) else { return .error(UserDefaultsRepositoryError.noSuchModelInDatabase(model)) }
     
@@ -100,7 +100,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return .success(model)
   }
   
-  func delete(_ model: Object) -> Error? {
+  public func delete(_ model: Object) -> Error? {
     var objects = Set(self.getAll())
     guard objects.contains(model) else { return UserDefaultsRepositoryError.noSuchModelInDatabase(model) }
     
@@ -110,7 +110,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return nil
   }
   
-  func delete(_ models: [Model]) -> Error? {
+  public func delete(_ models: [Model]) -> Error? {
     var objects = Set(self.getAll())
     guard Set(models).isSubset(of: objects) else { return UserDefaultsRepositoryError.noSuchModelsInDatabase(models) }
     
@@ -120,12 +120,12 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return nil
   }
   
-  func deleteAll() -> Error? {
+  public func deleteAll() -> Error? {
     userDefault.removeObject(forKey: key)
     return nil
   }
   
-  func performTranscation(_ transaction: () -> Void) -> Error? {
+  public func performTranscation(_ transaction: () -> Void) -> Error? {
     transaction()
     return nil
   }
