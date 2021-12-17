@@ -17,11 +17,16 @@ let package = Package(
   
     .library(
       name: "XRepositoryFileSystem",
-      targets: ["XRepositoryFileSystem"])
+      targets: ["XRepositoryFileSystem"]),
+    
+    .library(
+      name: "XRepositoryRealm",
+      targets: ["XRepositoryRealm"])
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     .package(url: "https://github.com/ReactiveX/RxSwift.git", from: "6.2.0"),
+    .package(url: "https://github.com/realm/realm-cocoa.git", from: "10.2.1")
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -38,6 +43,15 @@ let package = Package(
       name: "XRepositoryFileSystem",
       dependencies: ["XRepository"]),
     
+    .target(
+      name: "XRepositoryRealm",
+      dependencies: [
+        "XRepository",
+        .product(name: "RealmSwift", package: "realm-cocoa"),
+        .product(name: "Realm", package: "realm-cocoa")
+      ]),
+    
+    // Test Targets
     .testTarget(
       name: "XRepositoryTests",
       dependencies: ["XRepository"]),
@@ -48,7 +62,14 @@ let package = Package(
     
     .testTarget(
       name: "XRepositoryFileSystemTests",
-      dependencies: ["XRepositoryFileSystem"])
+      dependencies: ["XRepositoryFileSystem"]),
+    
+    .testTarget(
+      name: "XRepositoryRealmTests",
+      dependencies: [
+        "XRepositoryRealm",
+        .product(name: "RealmSwift", package: "realm-cocoa"),
+      ])
     
   ]
 )
