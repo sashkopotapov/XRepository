@@ -67,11 +67,11 @@ let churchesViewModel = ChurchesViewModel(churchesRepository: AnyRepository(chur
 
 let churchesRepository: AnyRepository<Church>!
 
-  churchesRepository.rx.getElements(sortedBy: \.name)
-    .subscribe(onNext: { churchesOrderedByName in
-      ...
-    })
-    .disposed(by: bag)
+churchesRepository.rx.getElements(sortedBy: \.name)
+  .subscribe(onNext: { churchesOrderedByName in
+    ...
+  })
+  .disposed(by: bag)
 
 ```
 If you want  a pure reactive repository implementations for popular storages, check my latest project: [ReactiveXRepository](https://github.com/sashkopotapov/ReactiveXRepository.git)
