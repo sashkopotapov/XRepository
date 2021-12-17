@@ -26,7 +26,7 @@ public class ComparableKeyPath<Model> {
     return _isSmaller(obj1, obj2)
   }
   
-  func string() -> String {
+  public func string() -> String {
     return _string()
   }
   

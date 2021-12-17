@@ -19,7 +19,7 @@ public class Query<Model> {
     return self
   }
   
-  func createPredicate() -> NSPredicate {
+  public func createPredicate() -> NSPredicate {
     return NSCompoundPredicate(andPredicateWithSubpredicates: predicates.map { $0.predicate })
   }
   

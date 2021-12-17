@@ -13,10 +13,10 @@ public protocol IdentifiableCodable: Codable, Hashable {
   var id: Identifier { get }
 }
 
-public final class UserDefaultsRepository<Object: IdentifiableCodable>: Repository {
-  public typealias Model = Object
+public final class UserDefaultsRepository<Model: IdentifiableCodable>: Repository {
+  public typealias Model = Model
   
-  private let key = "\(Object.self)"
+  private let key = "\(Model.self)"
   private let userDefault: UserDefaults
   private let encoder: JSONEncoder
   private let decoder: JSONDecoder
@@ -70,7 +70,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return AnyRandomAccessCollection(objects)
   }
   
-  public func create(_ model: Model) -> RepositoryEditResult<Object> {
+  @discardableResult public func create(_ model: Model) -> RepositoryEditResult<Model> {
     var objects = Set(self.getAll())
     guard !objects.contains(model) else { return .error(UserDefaultsRepositoryError.valueAlreadyExists(model)) }
     
@@ -80,7 +80,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return .success(model)
   }
   
-  public func create(_ models: [Model]) -> RepositoryEditResult<[Object]> {
+  @discardableResult public func create(_ models: [Model]) -> RepositoryEditResult<[Model]> {
     var objects = Set(self.getAll())
     guard Set(models).intersection(objects).isEmpty else { return .error(UserDefaultsRepositoryError.valuesAlreadyExist(models)) }
     
@@ -90,7 +90,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return .success(models)
   }
   
-  public func update(_ model: Model) -> RepositoryEditResult<Object> {
+  @discardableResult public func update(_ model: Model) -> RepositoryEditResult<Model> {
     var objects = Set(getAll())
     guard objects.contains(model) else { return .error(UserDefaultsRepositoryError.noSuchModelInDatabase(model)) }
     
@@ -100,7 +100,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return .success(model)
   }
   
-  public func delete(_ model: Object) -> Error? {
+  @discardableResult public func delete(_ model: Model) -> Error? {
     var objects = Set(self.getAll())
     guard objects.contains(model) else { return UserDefaultsRepositoryError.noSuchModelInDatabase(model) }
     
@@ -110,7 +110,7 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return nil
   }
   
-  public func delete(_ models: [Model]) -> Error? {
+  @discardableResult public func delete(_ models: [Model]) -> Error? {
     var objects = Set(self.getAll())
     guard Set(models).isSubset(of: objects) else { return UserDefaultsRepositoryError.noSuchModelsInDatabase(models) }
     
@@ -120,12 +120,12 @@ public final class UserDefaultsRepository<Object: IdentifiableCodable>: Reposito
     return nil
   }
   
-  public func deleteAll() -> Error? {
+  @discardableResult  public func deleteAll() -> Error? {
     userDefault.removeObject(forKey: key)
     return nil
   }
   
-  public func performTranscation(_ transaction: () -> Void) -> Error? {
+  @discardableResult public func performTranscation(_ transaction: () -> Void) -> Error? {
     transaction()
     return nil
   }

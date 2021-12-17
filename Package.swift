@@ -66,22 +66,24 @@ let package = Package(
   
     .testTarget(
       name: "XRepositoryRxTests",
-      dependencies: ["XRepositoryRx", "RxSwift"]),
+      dependencies: ["XRepository", "XRepositoryRx", "RxSwift"]),
     
     .testTarget(
       name: "XRepositoryFileSystemTests",
-      dependencies: ["XRepositoryFileSystem"]),
+      dependencies: ["XRepository", "XRepositoryFileSystem"]),
     
     .testTarget(
       name: "XRepositoryRealmTests",
       dependencies: [
+        "XRepository",
         "XRepositoryRealm",
         .product(name: "RealmSwift", package: "realm-cocoa"),
+        .product(name: "Realm", package: "realm-cocoa")
       ]),
     
     .testTarget(
       name: "XRepositoryUserDefaultsTests",
-      dependencies: ["XRepositoryUserDefaults"])
+      dependencies: ["XRepository", "XRepositoryUserDefaults"])
     
   ]
 )

@@ -1,30 +1,32 @@
 //
-//  FileSystemRepositoryTests.swift
-//  XRepositoryRxTests
+//  XRepositoryRealmTests.swift
+//  XRepositoryRealmTests
 //
-//  Created by Oleksandr Potapov on 16.12.2021.
+//  Created by Oleksandr Potapov on 17.12.2021.
 //
 
 import XCTest
 import XRepository
-@testable import XRepositoryFileSystem
+import RealmSwift
+@testable import XRepositoryRealm
 
-class FileSystemRepositoryTests: XCTestCase {
+class RealmRepositoryTests: XCTestCase {
   
-  fileprivate var repository: FileSystemRepository<Employee>!
+  fileprivate var repository: RealmRepository<QuickEmployee>!
   
-  fileprivate let testEmployees: [Employee] = [
-    Employee(name: "Quirin", age: 21, data: Data()),
-    Employee(name: "Stefan", age: 24, data: Data()),
-    Employee(name: "Sebi", age: 22, data: Data()),
-    Employee(name: "Malte" ,age: 24, data: Data()),
-    Employee(name: "Joan", age: 23, data: Data()),
+  fileprivate let testEmployees: [QuickEmployee] = [
+    QuickEmployee(name: "Quirin", age: 21, data: Data()),
+    QuickEmployee(name: "Stefan", age: 24, data: Data()),
+    QuickEmployee(name: "Sebi", age: 22, data: Data()),
+    QuickEmployee(name: "Malte" ,age: 24, data: Data()),
+    QuickEmployee(name: "Joan", age: 23, data: Data()),
   ]
   
   override func setUp() {
     super.setUp()
     
-    repository = FileSystemRepository(directory: .caches)
+    let testRealm = try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "TestRealm"))
+    repository = RealmRepository<QuickEmployee>(realm: testRealm)
     
     addRandomMockObjects(to: repository)
   }
@@ -43,13 +45,13 @@ class FileSystemRepositoryTests: XCTestCase {
   }
   
   func testFilter() {
-    repository.create(Employee(name: "Torsten", age: 19, data: Data()))
-    repository.create(Employee(name: "Torben", age: 21, data: Data()))
-    repository.create(Employee(name: "Tim", age: 87, data: Data()))
-    repository.create(Employee(name: "Struppi", age: 3, data: Data()))
+    repository.create(QuickEmployee(name: "Torsten", age: 19, data: Data()))
+    repository.create(QuickEmployee(name: "Torben", age: 21, data: Data()))
+    repository.create(QuickEmployee(name: "Tim", age: 87, data: Data()))
+    repository.create(QuickEmployee(name: "Struppi", age: 3, data: Data()))
     
     let newEmployeeName = "Zementha"
-    repository.create(Employee(name: newEmployeeName, age: 34, data: Data()))
+    repository.create(QuickEmployee(name: newEmployeeName, age: 34, data: Data()))
     
     let filteredEmployees = repository.getElements(filteredByPredicate: \.name == newEmployeeName)
     guard let firstEmployee = filteredEmployees.first else { return }
@@ -84,26 +86,27 @@ class FileSystemRepositoryTests: XCTestCase {
   
   // MARK: Helper Methods
   
-  private func addRandomMockObjects(to repository: FileSystemRepository<Employee>) {
+  private func addRandomMockObjects(to repository: RealmRepository<QuickEmployee>) {
     repository.deleteAll()
     repository.create(testEmployees)
   }
   
 }
 
-class Employee: IdentifiableCodable {
-  var id: String = ""
-  var name: String = ""
-  var age: Int = 0
-  var data: Data = Data()
+class QuickEmployee: Object {
+  @objc dynamic var name: String = ""
+  @objc dynamic var age: Int = 0
+  @objc dynamic var data: Data = Data()
   
   convenience init(name: String, age: Int, data: Data) {
     self.init()
     
-    self.id = name
     self.name = name
     self.age = age
     self.data = data
   }
+  
+  override static func primaryKey() -> String? {
+    return "name"
+  }
 }
-

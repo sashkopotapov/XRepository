@@ -26,7 +26,7 @@ public class HashableKeyPath<Model> {
     return _hashValue(obj)
   }
   
-  func string() -> String {
+  public func string() -> String {
     return _string()
   }
   

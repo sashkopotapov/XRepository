@@ -81,6 +81,19 @@ class  RxRepository<Model> {
 ```
 If you want  a pure reactive repository implementations for popular storages, check my latest project: [ReactiveXRepository](https://github.com/sashkopotapov/ReactiveXRepository.git)
 
+## 🍴 Instalation
+### Swift Package Manager
+
+The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler. It is in early development, but Alamofire does support its use on supported platforms.
+
+Once you have your Swift package set up, adding Alamofire as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.5.0"))
+]
+```
+
 ## 👤 Author
 This framework is created by Sashko Potapov.
 
