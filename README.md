@@ -9,75 +9,62 @@
 **XRepository** is based on [QBRepository by QuickBirds Studios](https://github.com/quickbirdstudios/QBRepository). It is lightweight implementation of Repository pattern in Swift.
 
 ## 👋🏻  Getting started
-Cornerstone of this project is `Repository`  protocol.
-```swift
-protocol  Repository {
-  associatedtype  Model
-
-  func getAll() -> AnyRandomAccessCollection<Model>
-  func getElement<Id>(withId id: Id) -> Model?
-  func getElements(filteredBy filter: Query<Model>?, sortedBy sortKeyPath: ComparableKeyPath<Model>?, distinctUsing distinctMode: HashableKeyPath<Model>?) -> AnyRandomAccessCollection<Model>
-  func create(_ model: Model) -> RepositoryEditResult<Model>
-  func create(_ models: [Model]) -> RepositoryEditResult<[Model]>
-  func update(_ model: Model) -> RepositoryEditResult<Model>
-  func delete(_ model: Model) -> Error?
-  func delete(_ models: [Model]) -> Error?
-  func deleteAll() -> Error?
-  func performTranscation(_ transaction: () -> Void) -> Error?
-}
-```
-
-Than you have `AnyRepository` class to abstragate implementation of `Repository` from its consumers. `AnyRepository` has the same semantic as its interface.
+Cornerstones of this project is `protocol Repository` and `class AnyRepository` as its generic implementation. `Repository` supports basic and advanced CRUD operations. Also, you have access out-of-the-box implementations of a few popular storages based on: `UserDefaults`, `RealmSwift`, `FileManager`, `CoreData`. But you can also create your own implementation of those ones or any other storage mechanism.
 
 ```swift
-final class AnyRepository<Model>: Repository {
-  ...
-  init <A: Repository>(_ repository: A) where A.Model == Model { ... }
+final class CustomRealmRepository: Repository {
   ...
 }
 ```
+
 ## 🔧 Usage
-**XRepository** provides implementations for popular storages from-the-box:
-`UserDefaultRepository`, ` RealmRepository`, `FileSystemRepository`, but you can create your own implementation.
+Since `Repository` requires associated value to it, we use its generic implementation `AnyRepository`.
 Usage is simple:
 ```swift
 class ChurchesViewModel {
-  ...
-  let churchesRepository: AnyRepository<Church>
+  ...  
+  init(_ churchesRepository: AnyRepository<Church>) {
+  
+    // Create
+    churchesRepository.create(Church(id: "hillsong", name: "Hillsong", family: "hillsong-family"))
+    ...
+    
+    // Read
+    let allChurches = churchesRepository.getAll()
+    let hillsongChurch = churches.getElement(withId: "hillsong")
+    let hillsongFamilyChurches = churches.getElements(filterBy: \.family == "hillsong")
+    
+    // Update
+    churchesRepository.update(Church(id: "hillsong", name: "Hillsong Kyiv", family: "hillsong-family"))
+    
+    // Delete
+    churchesRepository.deleteAll()
+    ...
+    
+  }
   ...
 }
 
-let churchesStorage = AnyRepository(UserDefaultsRepository<Church>())
-let churchesViewModel = ChurchesViewModel(churchesRepository: churchesStorage)
+let churchesUserDefaultsStorage = UserDefaultsRepository<Church>()
+let churchesRealmStorage = RealmRepository<Church>()
+let churchesCoreDataStorage = CoreDataRepository<Church>()
+let churchesFileSystemStorage = FileSystemRepository<Church>()
+
+// Any repository will fit
+let churchesViewModel = ChurchesViewModel(churchesRepository: AnyRepository(churchesRealmStorage))
+
 ```
 
 ##  ⚡️ Rx
 **XRepository** supports reactive wrapper over `AnyRepository`
 ```swift
-extension  AnyRepository {
-  var rx: RxRepository<Model> {
-    return RxRepository(self)
-  }
-}
 
-class  RxRepository<Model> {
+let churchesRepository: AnyRepository<Church>!
+  ...
+  churchesRepository.rx.getElements(sortedBy: \.name)
+    .subscribe()
+    .disposed(by: bag)
 
-  let  base: AnyRepository<Model>
-  
-  init(_ base: AnyRepository<Model>) {
-    self.base = base
-  }
-  
-  func getAll() -> Single<AnyRandomAccessCollection<Model>> {
-    return Single.create(subscribe: { single -> Disposable in
-      let models = self.base.getAll() 
-      single(.success(models))
-      return Disposables.create()
-     })
-  }
-  ....
-  
- }
 ```
 If you want  a pure reactive repository implementations for popular storages, check my latest project: [ReactiveXRepository](https://github.com/sashkopotapov/ReactiveXRepository.git)
 
@@ -90,7 +77,7 @@ Once you have your Swift package set up, adding Alamofire as a dependency is as 
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.5.0"))
+    .package(url: "https://github.com/sashkopotapov/XRepository.git", .upToNextMajor(from: "1.0.0"))
 ]
 ```
 
