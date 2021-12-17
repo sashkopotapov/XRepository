@@ -22,7 +22,7 @@ public class HashableKeyPath<Model> {
     }
   }
   
-  func hashValue(obj: Model) -> Int {
+  public func hashValue(obj: Model) -> Int {
     return _hashValue(obj)
   }
   

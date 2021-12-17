@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import XRepository
 import RxSwift
 
 public extension AnyRepository {

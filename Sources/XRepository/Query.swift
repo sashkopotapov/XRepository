@@ -23,7 +23,7 @@ public class Query<Model> {
     return NSCompoundPredicate(andPredicateWithSubpredicates: predicates.map { $0.predicate })
   }
   
-  func evaluate(_ model: Model) -> Bool {
+  public func evaluate(_ model: Model) -> Bool {
     return predicates
       .map { $0.evaluate(model) }
       .reduce(true) { $0 && $1 }

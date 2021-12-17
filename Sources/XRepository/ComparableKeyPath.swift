@@ -22,7 +22,7 @@ public class ComparableKeyPath<Model> {
     }
   }
   
-  func isSmaller(obj1: Model, obj2: Model) -> Bool {
+  public func isSmaller(obj1: Model, obj2: Model) -> Bool {
     return _isSmaller(obj1, obj2)
   }
   

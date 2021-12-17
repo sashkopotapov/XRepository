@@ -11,9 +11,13 @@ let package = Package(
       name: "XRepository",
       targets: ["XRepository"]),
     
-      .library(
-        name: "XRepositoryRx",
-        targets: ["XRepositoryRx"]),
+    .library(
+      name: "XRepositoryRx",
+      targets: ["XRepositoryRx"]),
+  
+    .library(
+      name: "XRepositoryFileSystem",
+      targets: ["XRepositoryFileSystem"])
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
@@ -30,12 +34,21 @@ let package = Package(
       name: "XRepositoryRx",
       dependencies: ["XRepository", "RxSwift"]),
   
+    .target(
+      name: "XRepositoryFileSystem",
+      dependencies: ["XRepository"]),
+    
     .testTarget(
       name: "XRepositoryTests",
       dependencies: ["XRepository"]),
   
     .testTarget(
       name: "XRepositoryRxTests",
-      dependencies: ["XRepositoryRx", "RxSwift"])
+      dependencies: ["XRepositoryRx", "RxSwift"]),
+    
+    .testTarget(
+      name: "XRepositoryFileSystemTests",
+      dependencies: ["XRepositoryFileSystem"])
+    
   ]
 )
