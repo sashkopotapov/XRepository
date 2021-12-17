@@ -17,12 +17,12 @@ protocol  Repository {
   func getAll() -> AnyRandomAccessCollection<Model>
   func getElement<Id>(withId id: Id) -> Model?
   func getElements(filteredBy filter: Query<Model>?, sortedBy sortKeyPath: ComparableKeyPath<Model>?, distinctUsing distinctMode: HashableKeyPath<Model>?) -> AnyRandomAccessCollection<Model>
-  func  create(_ model: Model) -> RepositoryEditResult<Model>
-  func  create(_ models: [Model]) -> RepositoryEditResult<[Model]>
-  func  update(_ model: Model) -> RepositoryEditResult<Model>
-  func  delete(_ model: Model) -> Error?
+  func create(_ model: Model) -> RepositoryEditResult<Model>
+  func create(_ models: [Model]) -> RepositoryEditResult<[Model]>
+  func update(_ model: Model) -> RepositoryEditResult<Model>
+  func delete(_ model: Model) -> Error?
   func delete(_ models: [Model]) -> Error?
-  func  deleteAll() -> Error?
+  func deleteAll() -> Error?
   func performTranscation(_ transaction: () -> Void) -> Error?
 }
 ```
