@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import XRepository
 
 public protocol IdentifiableCodable: Codable, Hashable {
   associatedtype Identifier: Hashable
