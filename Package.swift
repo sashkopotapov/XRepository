@@ -21,7 +21,11 @@ let package = Package(
     
     .library(
       name: "XRepositoryRealm",
-      targets: ["XRepositoryRealm"])
+      targets: ["XRepositoryRealm"]),
+    
+    .library(
+      name: "XRepositoryUserDefaults",
+      targets: ["XRepositoryUserDefaults"])
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
@@ -51,6 +55,10 @@ let package = Package(
         .product(name: "Realm", package: "realm-cocoa")
       ]),
     
+    .target(
+      name: "XRepositoryUserDefaults",
+      dependencies: ["XRepository"]),
+    
     // Test Targets
     .testTarget(
       name: "XRepositoryTests",
@@ -69,7 +77,11 @@ let package = Package(
       dependencies: [
         "XRepositoryRealm",
         .product(name: "RealmSwift", package: "realm-cocoa"),
-      ])
+      ]),
+    
+    .testTarget(
+      name: "XRepositoryUserDefaultsTests",
+      dependencies: ["XRepositoryUserDefaults"])
     
   ]
 )
