@@ -14,7 +14,7 @@ public protocol IdentifiableCodable: Codable, Hashable {
 }
 
 public final class UserDefaultsRepository<Object: IdentifiableCodable>: Repository {
-  typealias Model = Object
+  public typealias Model = Object
   
   private let key = "\(Object.self)"
   private let userDefault: UserDefaults
