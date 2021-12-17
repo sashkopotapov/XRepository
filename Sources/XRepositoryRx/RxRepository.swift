@@ -58,7 +58,7 @@ public class RxRepository<Model> {
       case .success(let model):
         single(.success(model))
       case .error(let error):
-        single(.error(error))
+        single(.failure(error))
       }
       
       return Disposables.create()
@@ -73,7 +73,7 @@ public class RxRepository<Model> {
       case .success(let models):
         single(.success(models))
       case .error(let error):
-        single(.error(error))
+        single(.failure(error))
       }
       
       return Disposables.create()
@@ -88,7 +88,7 @@ public class RxRepository<Model> {
       case .success(let model):
         single(.success(model))
       case .error(let error):
-        single(.error(error))
+        single(.failure(error))
       }
       
       return Disposables.create()
@@ -98,7 +98,7 @@ public class RxRepository<Model> {
   public func delete(_ model: Model, cascading: Bool) -> Single<Void> {
     return Single.create { single -> Disposable in
       if let error = self.base.delete(model) {
-        single(.error(error))
+        single(.failure(error))
       } else {
         single(.success(()))
       }
@@ -110,7 +110,7 @@ public class RxRepository<Model> {
   public func deleteMultiple(_ models: [Model], cascading: Bool) -> Single<Void> {
     return Single.create { single -> Disposable in
       if let error = self.base.delete(models) {
-        single(.error(error))
+        single(.failure(error))
       } else {
         single(.success(()))
       }
@@ -122,7 +122,7 @@ public class RxRepository<Model> {
   public func deleteAll(cascading: Bool) -> Single<Void> {
     return Single.create { single -> Disposable in
       if let error = self.base.deleteAll() {
-        single(.error(error))
+        single(.failure(error))
       } else {
         single(.success(()))
       }
