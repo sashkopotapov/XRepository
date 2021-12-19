@@ -10,10 +10,6 @@ let package = Package(
     .library(
       name: "XRepository",
       targets: ["XRepository"]),
-    
-    .library(
-      name: "XRepositoryRx",
-      targets: ["XRepositoryRx"]),
   
     .library(
       name: "XRepositoryFileSystem",
@@ -29,7 +25,6 @@ let package = Package(
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
-    .package(url: "https://github.com/ReactiveX/RxSwift.git", from: "6.2.0"),
     .package(url: "https://github.com/realm/realm-cocoa.git", from: "10.2.1")
   ],
   targets: [
@@ -39,10 +34,6 @@ let package = Package(
       name: "XRepository",
       dependencies: []),
     
-    .target(
-      name: "XRepositoryRx",
-      dependencies: ["XRepository", "RxSwift"]),
-  
     .target(
       name: "XRepositoryFileSystem",
       dependencies: ["XRepository"]),
@@ -63,10 +54,6 @@ let package = Package(
     .testTarget(
       name: "XRepositoryTests",
       dependencies: ["XRepository"]),
-  
-    .testTarget(
-      name: "XRepositoryRxTests",
-      dependencies: ["XRepository", "XRepositoryRx", "RxSwift"]),
     
     .testTarget(
       name: "XRepositoryFileSystemTests",

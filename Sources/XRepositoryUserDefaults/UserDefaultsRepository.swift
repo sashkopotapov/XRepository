@@ -16,10 +16,10 @@ public protocol IdentifiableCodable: Codable, Hashable {
 public final class UserDefaultsRepository<Model: IdentifiableCodable>: Repository {
   public typealias Model = Model
   
-  private let key = "\(Model.self)"
-  private let userDefault: UserDefaults
-  private let encoder: JSONEncoder
-  private let decoder: JSONDecoder
+  public let key = "\(Model.self)"
+  public let userDefault: UserDefaults
+  public let encoder: JSONEncoder
+  public let decoder: JSONDecoder
   
   public init(suiteName: String? = nil, encoder: JSONEncoder = JSONEncoder(), decoder: JSONDecoder = JSONDecoder()) {
     self.encoder = encoder
