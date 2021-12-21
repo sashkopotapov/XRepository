@@ -62,19 +62,7 @@ let churchesViewModel = ChurchesViewModel(churchesRepository: AnyRepository(chur
 ```
 
 ##  ⚡️ Rx
-**XRepository** supports reactive wrapper over `AnyRepository`
-```swift
-
-let churchesRepository: AnyRepository<Church>!
-
-churchesRepository.rx.getElements(sortedBy: \.name)
-  .subscribe(onNext: { churchesOrderedByName in
-    ...
-  })
-  .disposed(by: bag)
-
-```
-If you want  a pure reactive repository implementations for popular storages, check my latest project: [ReactiveXRepository](https://github.com/sashkopotapov/ReactiveXRepository.git)
+**XRepository** is a pure implementation of Repository pattern. If you want to use Rx version check my latest project: [RxXRepository](https://github.com/sashkopotapov/RxXRepository.git)
 
 ## 🍴 Instalation
 ### Swift Package Manager
@@ -85,7 +73,7 @@ Once you have your Swift package set up, adding Alamofire as a dependency is as 
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/sashkopotapov/XRepository.git", .upToNextMajor(from: "1.0.0"))
+    .package(url: "https://github.com/sashkopotapov/XRepository.git", .upToNextMinor(from: "1.1.0"))
 ]
 ```
 
