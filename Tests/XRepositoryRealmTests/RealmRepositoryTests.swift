@@ -90,7 +90,6 @@ class RealmRepositoryTests: XCTestCase {
     repository.deleteAll()
     repository.create(testEmployees)
   }
-  
 }
 
 class QuickEmployee: Object {

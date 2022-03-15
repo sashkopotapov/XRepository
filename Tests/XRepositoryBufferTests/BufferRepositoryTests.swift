@@ -1,17 +1,18 @@
 //
-//  XRepositoryUserDefaultsTests.swift
-//  XRepositoryUserDefaultsTests
+//  File.swift
+//  
 //
-//  Created by Oleksandr Potapov on 17.12.2021.
+//  Created by Oleksandr Potapov on 12.03.2022.
 //
 
+import Foundation
 import XCTest
 import XRepository
-@testable import XRepositoryUserDefaults
+@testable import XRepositoryBuffer
 
-class UserDefaultsTests: XCTestCase {
-
-  fileprivate var repository: UserDefaultsRepository<Employee>!
+class XRepositoryBufferTests: XCTestCase {
+  
+  fileprivate var repository: BufferRepository<Employee>!
   
   fileprivate let testEmployees: [Employee] = [
     Employee(name: "Quirin", age: 21, data: Data()),
@@ -24,8 +25,7 @@ class UserDefaultsTests: XCTestCase {
   override func setUp() {
     super.setUp()
     
-    repository = UserDefaultsRepository<Employee>(suiteName: nil)
-    
+    repository = BufferRepository<Employee>()
     addRandomMockObjects(to: repository)
   }
   
@@ -49,7 +49,6 @@ class UserDefaultsTests: XCTestCase {
     repository.create(Employee(name: "Struppi", age: 3, data: Data()))
     
     let newEmployeeName = "Zementha"
-    
     repository.create(Employee(name: newEmployeeName, age: 34, data: Data()))
     
     let filteredEmployees = repository.getElements(filteredByPredicate: \.name == newEmployeeName)
@@ -62,7 +61,6 @@ class UserDefaultsTests: XCTestCase {
   func testSortingAscending() {
     let stdlibSortedEmployees = testEmployees.sorted(by: { $0.age < $1.age })
     let filteredEmployees = repository.getElements(sortedBy: \.age)
-    print(stdlibSortedEmployees, filteredEmployees)
     
     XCTAssert(filteredEmployees.first?.age == stdlibSortedEmployees.first?.age)
     XCTAssert(filteredEmployees.last?.age == stdlibSortedEmployees.last?.age)
@@ -86,14 +84,13 @@ class UserDefaultsTests: XCTestCase {
   
   // MARK: Helper Methods
   
-  private func addRandomMockObjects(to repository: UserDefaultsRepository<Employee>) {
-    let _ = repository.deleteAll()
+  private func addRandomMockObjects(to repository: BufferRepository<Employee>) {
+    repository.deleteAll()
     repository.create(testEmployees)
   }
-
 }
 
-class Employee: IdentifiableCodable {
+class Employee: Identifiable {
   var id: String = ""
   var name: String = ""
   var age: Int = 0
@@ -108,11 +105,11 @@ class Employee: IdentifiableCodable {
     self.data = data
   }
   
-  func hash(into hasher: inout Hasher) {
-    return hasher.combine(id)
+  static func == (lhs: Employee, rhs: Employee) -> Bool {
+    lhs.id == rhs.id
   }
   
-  static func == (lhs: Employee, rhs: Employee) -> Bool {
-    return lhs.id == rhs.id
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
   }
 }
