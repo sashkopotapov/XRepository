@@ -6,6 +6,10 @@
 <a><img src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
 </p>
 
+<p align="center">
+<font size="24">🍬</font>
+</p>
+
 **XRepository** is based on [QBRepository by QuickBirds Studios](https://github.com/quickbirdstudios/QBRepository). It is lightweight implementation of Repository pattern in Swift.
 
 ##  Getting started
