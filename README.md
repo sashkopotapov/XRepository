@@ -12,7 +12,7 @@
 Cornerstones of this project are `protocol Repository` and `class AnyRepository` as its generic implementation. `Repository` supports basic and advanced CRUD operations. Also, you have access to out-of-the-box implementations of a few popular storages based on: `BehaviorRelay`, `RealmSwift`, `FileManager`. But you can also create your own implementation of those ones or any other storage mechanism.
 
 <p align="center">
-  <img src="snippet_1.png"/>
+  <img src="snippetOne.png"/>
 </p>
 
 ## Usage
@@ -20,12 +20,12 @@ Since `Repository` requires associated value to it, we use its abstract implemen
 Usage is simple:
 
 <p align="center">
-  <img src="snippet_2.png"/>
+  <img src="snippetTwo.png"/>
 </p>
 
 And some cool sugar 🍬:
 <p align="center">
-  <img src="snippet_3.png"/>
+  <img src="snippetThree.png"/>
 </p>
 
 ##  RxSwift
