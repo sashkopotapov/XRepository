@@ -23,7 +23,7 @@ Usage is simple:
   <img src="snippet_2.png"/>
 </p>
 
-And some cool sugar
+And some cool sugar 🍬:
 <p align="center">
   <img src="snippet_3.png"/>
 </p>
