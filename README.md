@@ -8,63 +8,30 @@
 
 **XRepository** is based on [QBRepository by QuickBirds Studios](https://github.com/quickbirdstudios/QBRepository). It is lightweight implementation of Repository pattern in Swift.
 
-## 👋🏻  Getting started
-Cornerstones of this project are `protocol Repository` and `class AnyRepository` as its generic implementation. `Repository` supports basic and advanced CRUD operations. Also, you have access to out-of-the-box implementations of a few popular storages based on: `UserDefaults`, `RealmSwift`, `FileManager`, `CoreData`. But you can also create your own implementation of those ones or any other storage mechanism.
-```swift
-public protocol Repository {
-  associatedtype Model
-  ...
-}
+##  Getting started
+Cornerstones of this project are `protocol Repository` and `class AnyRepository` as its generic implementation. `Repository` supports basic and advanced CRUD operations. Also, you have access to out-of-the-box implementations of a few popular storages based on: `BehaviorRelay`, `RealmSwift`, `FileManager`. But you can also create your own implementation of those ones or any other storage mechanism.
 
-public final class AnyRepository<Model>: Repository {
-  ...
-}
-```
+<p align="center">
+  <img src="snippet_1.png"/>
+</p>
 
-## 🔧 Usage
-Since `Repository` requires associated value to it, we use its generic implementation `AnyRepository`.
+## Usage
+Since `Repository` requires associated value to it, we use its abstract implementation `AnyRepository`.
 Usage is simple:
-```swift
-class ChurchesViewModel {
-  ...  
-  init(_ churchesRepository: AnyRepository<Church>) {
-  
-    let localChurch = Church(id: "hillsong-lviv", name: "Hillsong Lviv", family: "hillsong-family")
-    let stateChurches = [Church(id: "hillsong-lviv", name: "Hillsong Lviv", family: "hillsong-family"), Church(id: "hillsong-odesa", name: "Hillsong Odesa", family: "hillsong-family")]
-    
-    // Create
-    churchesRepository.create(localChurch)
-    churchesRepository.create(stateChurches)
-    
-    // Read
-    let allChurches = churchesRepository.getAll()
-    let hillsongChurch = churches.getElement(withId: "hillsong")
-    let hillsongFamilyChurches = churches.getElements(filterBy: \.family == "hillsong")
-    
-    // Update
-    churchesRepository.update(Church(id: "hillsong", name: "Hillsong Kyiv", family: "hillsong-family"))
-    
-    // Delete
-    churchesRepository.deleteAll()
-    churchRepository.delete(localChurch)
-    churchRepository.delete(stateChurches)
-  }
-  ...
-}
 
-let churchesUserDefaultsStorage = UserDefaultsRepository<Church>()
-let churchesRealmStorage = RealmRepository<Church>()
-let churchesCoreDataStorage = CoreDataRepository<Church>()
-let churchesFileSystemStorage = FileSystemRepository<Church>()
+<p align="center">
+  <img src="snippet_2.png"/>
+</p>
 
-// Any repository will fit
-let churchesViewModel = ChurchesViewModel(churchesRepository: AnyRepository(churchesRealmStorage))
-```
+And some cool sugar
+<p align="center">
+  <img src="snippet_3.png"/>
+</p>
 
-##  ⚡️ Rx
-**XRepository** is a pure implementation of Repository pattern. If you want to use Rx version check my latest project: [RxXRepository](https://github.com/sashkopotapov/RxXRepository.git)
+##  RxSwift
+**XRepository** is a pure implementation of Repository pattern. If you want to add RxSwift support to your repository, check super-lightweight extension: [RxXRepository](https://github.com/sashkopotapov/RxXRepository.git)
 
-## 🍴 Instalation
+## Instalation
 ### Swift Package Manager
 
 The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler. It is in early development, but Alamofire does support its use on supported platforms.
@@ -73,7 +40,7 @@ Once you have your Swift package set up, adding Alamofire as a dependency is as 
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/sashkopotapov/XRepository.git", .upToNextMinor(from: "1.1.0"))
+    .package(url: "https://github.com/sashkopotapov/XRepository.git", .upToNextMinor(from: "1.2.0"))
 ]
 ```
 

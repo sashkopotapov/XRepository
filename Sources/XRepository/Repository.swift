@@ -12,13 +12,19 @@ public protocol Repository {
   
   func getAll() -> AnyRandomAccessCollection<Model>
   func getElement<Id>(withId id: Id) -> Model?
-  func getElements(filteredBy filter: Query<Model>?, sortedBy sortKeyPath: ComparableKeyPath<Model>?, distinctUsing distinctMode: HashableKeyPath<Model>?) -> AnyRandomAccessCollection<Model>
+  func getElements(filteredBy filter: Query<Model>?,
+                   sortedBy sortKeyPath: ComparableKeyPath<Model>?,
+                   distinctUsing distinctMode: HashableKeyPath<Model>?) -> AnyRandomAccessCollection<Model>
+  
   @discardableResult func create(_ model: Model) -> RepositoryEditResult<Model>
   @discardableResult func create(_ models: [Model]) -> RepositoryEditResult<[Model]>
+  
   @discardableResult func update(_ model: Model) -> RepositoryEditResult<Model>
+  
   @discardableResult func delete(_ model: Model) -> Error?
   @discardableResult func delete(_ models: [Model]) -> Error?
   @discardableResult func deleteAll() -> Error?
+  
   @discardableResult func performTranscation(_ transaction: () -> Void) -> Error?
 }
 
